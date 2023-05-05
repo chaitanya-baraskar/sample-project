@@ -31,17 +31,21 @@ public class DataLoaderService {
     @Autowired
     private InstallmentRepository installmentRepository;
 
+    // Function adds data from parent.json and child.json into H2 database.
+    // Function is triggered once application is ready.
     @Transactional
     @EventListener(ApplicationReadyEvent.class)
     public void dataLoader() throws IOException {
         logger.info("Attempting to load data into database.");
         ObjectMapper objectMapper = new ObjectMapper();
         ParentDataWrapper parentDataWrapper = objectMapper.readValue(ResourceUtils.getFile("classpath:parent.json"), ParentDataWrapper.class);
+        logger.info("Successfully read data from parent.json.");
         parentRepository.saveAll(parentDataWrapper.getParents());
         logger.info("Saved parent data in database successfully.");
 
         // Load child data
         InstallmentDataWrapper installmentDataWrapper = objectMapper.readValue(ResourceUtils.getFile("classpath:child.json"), InstallmentDataWrapper.class);
+        logger.info("Successfully read data from child.json.");
         installmentRepository.saveAll(installmentDataWrapper.getInstallments());
         logger.info("Saved installments data in database successfully.");
 

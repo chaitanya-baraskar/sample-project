@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 
-// For the sake of better understanding. I have renamed this from Child to Installment
+// For better understanding. I have renamed this from Child to Installment
 @Entity
 @Getter
 @Setter
@@ -21,6 +21,7 @@ public class Installment {
     @JsonBackReference
     private Parent parent;
 
+    // Added this to read parentId from JSON file. In normal cases this variable won't be needed.
     @JsonProperty("parentId")
     private int parentId;
 

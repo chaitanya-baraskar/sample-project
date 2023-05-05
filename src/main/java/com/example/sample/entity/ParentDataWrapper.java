@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 
+// Creating wrapper class to read JSON values of parent.json.
 @Getter
 @Setter
 public class ParentDataWrapper {
