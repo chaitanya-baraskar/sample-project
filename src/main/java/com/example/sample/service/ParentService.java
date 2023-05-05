@@ -27,7 +27,7 @@ public class ParentService {
         return paidAmounts;
     }
 
-    // TODO: Need to utilize ObjectMapper to remove this redundant code.
+    // TODO: Utilize ObjectMapper to remove this redundant code.
     private GetParentPaidAmount convertFromParentToGetAllParent(Parent parent) {
         GetParentPaidAmount parentPaidAmount = new GetParentPaidAmount();
         parentPaidAmount.setId(parent.getId());
