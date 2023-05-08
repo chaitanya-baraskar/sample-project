@@ -2,6 +2,7 @@ package com.example.sample.controller;
 
 import com.example.sample.dto.GetInstallmentInfo;
 import com.example.sample.dto.GetParentPaidAmount;
+import com.example.sample.dto.GetParentPaidAmountResponse;
 import com.example.sample.service.DataLoaderService;
 import com.example.sample.service.InstallmentService;
 import com.example.sample.service.ParentService;
@@ -24,11 +25,16 @@ public class ParentController {
     InstallmentService installmentService;
 
     @GetMapping("/parent")
-    public List<GetParentPaidAmount> getParents(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                @RequestParam(name = "size", defaultValue = "10") int size,
-                                                @RequestParam(name = "sortBy", defaultValue = "id") String sortBy) {
-        // TODO: Validate if given value exists for sort by.
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+    public GetParentPaidAmountResponse getParents(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                  @RequestParam(name = "size", defaultValue = "10") int size,
+                                                  @RequestParam(name = "orderByAsc", defaultValue = "asc") boolean orderByAsc) {
+        Sort sortOrder;
+        if (orderByAsc) {
+            sortOrder = Sort.by("id").ascending();
+        } else {
+            sortOrder = Sort.by("id").descending();
+        }
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
         logger.info("Received request to retrieve list of parents with pagination parameters " + pageable);
         return parentService.getAllParents(pageable);
     }

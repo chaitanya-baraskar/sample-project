@@ -1,5 +1,6 @@
 package com.example.sample.service;
 
+import com.example.sample.dto.GetParentPaidAmountResponse;
 import com.example.sample.entity.Installment;
 import com.example.sample.entity.Parent;
 import com.example.sample.dto.GetParentPaidAmount;
@@ -21,14 +22,26 @@ public class ParentService {
     ParentRepository parentRepository;
 
     // Retrieve all parents as per given pagination.
-    public List<GetParentPaidAmount> getAllParents(Pageable pageable) {
+    public GetParentPaidAmountResponse getAllParents(Pageable pageable) {
+        GetParentPaidAmountResponse response = new GetParentPaidAmountResponse();
+
+        // Retrieve data requested as per Pageable object.
         List<GetParentPaidAmount> paidAmounts = new ArrayList<>();
         Page<Parent> parents = parentRepository.findAll(pageable);
         for (Parent parent : parents) {
             paidAmounts.add(convertFromParentToGetAllParent(parent));
         }
         logger.info("Retrieved " + paidAmounts.size() + " parent records.");
-        return paidAmounts;
+        response.setData(paidAmounts);
+
+        // Retrieve page information
+        Page<Parent> parentPage = parentRepository.findAll(pageable);
+        response.setPageSize(parentPage.getPageable().getPageSize());
+        response.setTotalPages(parentPage.getTotalPages());
+        response.setCurrentPage(parentPage.getNumber());
+        response.setTotalElements(parentPage.getTotalElements());
+
+        return response;
     }
 
     // Converts Parent to dto GetParentAmount.
