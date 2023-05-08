@@ -1,8 +1,9 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th>ID</th>
-    <th>Name</th>
+    <th (click)="sortBy()">ID
+      <span [ngClass]="orderByAsc ? 'fa-solid fa-arrow-up' : 'fa-solid fa-arrow-down'"></span>
+    </th>
     <th>Sender</th>
     <th>Receiver</th>
     <th>Total Amount</th>
@@ -10,12 +11,26 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let data of tableData">
+  <tr *ngFor="let data of response.data">
     <td>{{ data.id }}</td>
     <td>{{ data.sender }}</td>
     <td>{{ data.receiver }}</td>
     <td>{{ data.totalAmount }}</td>
-    <td><a (click)="loadUserDetails(data.id)">{{ data.totalAmountPaid }}</a></td>
+    <td><a routerLink="" (click)="loadUserDetails(data.id)">{{ data.totalAmountPaid }}</a></td>
   </tr>
   </tbody>
 </table>
+
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="collectionSize"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="refreshParentTable()"
+  >
+  </ngb-pagination>
+
+  <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshParentTable()">
+    <option [ngValue]="2">2 items per page</option>
+  </select>
+</div>

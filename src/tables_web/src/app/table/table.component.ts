@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Directive, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environments";
+import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
 
 interface TableData {
@@ -11,25 +11,56 @@ interface TableData {
   totalAmountPaid: number;
 }
 
+interface ParentResponse {
+  data: TableData[];
+  totalPages: number,
+  totalElements: number,
+  currentPage: number,
+  pageSize: number,
+}
+
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
+
+
 export class TableComponent implements OnInit {
-  tableData: TableData[] = [];
+  response = {} as ParentResponse;
+  page = 0;
+  pageSize = 2;
+  collectionSize = 0;
+  orderByAsc: boolean = true;
+  sortColumn = "id"
 
 
   constructor(private http: HttpClient, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.http.get<TableData[]>(environment.API_URL + '/parent?page=0&size=2').subscribe(data => {
-      this.tableData = data;
-    });
+    this.getParentInfo(0, 2, this.orderByAsc)
   }
 
   loadUserDetails(id: number) {
     this.router.navigate(['/transactions', id]);
   }
+
+  refreshParentTable() {
+    this.getParentInfo((this.page - 1), this.pageSize, this.orderByAsc)
+  }
+
+  getParentInfo(page: number, size: number, orderByAsc: boolean) {
+    this.http.get<ParentResponse>(environment.API_URL + '/parent?page=' + page + '&size=' + size + '&orderByAsc=' + orderByAsc).subscribe(data => {
+      this.response = data;
+      this.collectionSize = data.totalElements
+    });
+  }
+
+  sortBy() {
+    this.orderByAsc = !this.orderByAsc;
+    this.getParentInfo((this.page - 1), this.pageSize, this.orderByAsc)
+  }
 }
+

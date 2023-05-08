@@ -7,10 +7,8 @@ import {TableComponent} from './table/table.component';
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { TransactionsComponent } from './transactions/transactions.component';
-import {MatSortModule} from "@angular/material/sort";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatTableModule} from "@angular/material/table";
-import {MatInputModule} from "@angular/material/input";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,10 +22,8 @@ import {MatInputModule} from "@angular/material/input";
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

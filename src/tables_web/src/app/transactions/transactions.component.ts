@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {environment} from "../../environments/environments";
+import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 
@@ -17,6 +17,7 @@ interface TransactionData {
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css']
 })
+
 export class TransactionsComponent implements OnInit {
   transactionData: TransactionData[] = [];
 
