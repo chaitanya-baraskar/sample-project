@@ -27,4 +27,6 @@ make serve
 - Add following targets in Makefile.
   - Build image
   - Build angular project and copy `Dist` files to `src/main/resources/static`
+  - Add single target to start/stop server
+- Add default screen either when backend is down or there's no data.
 
